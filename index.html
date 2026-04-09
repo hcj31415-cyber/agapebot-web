@@ -62,15 +62,23 @@
     </div>
 </div>
 
-<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.0.0-beta.4/index.js"></script>
+
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
 <script>
   new CozeWebSDK.WebChatClient({
     config: {
-      bot_id: '你的BotID', // 这里填你在Coze后台生成的ID
+      bot_id: '7626718100825735173',
     },
     componentProps: {
-      title: 'Agape',
+      title: 'Coze',
     },
+    auth: {
+      type: 'token',
+      token: 'pat_********',
+      onRefreshToken: function () {
+        return 'pat_********'
+      }
+    }
   });
 </script>
 </body>
