@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgapeBot | Pure Emotional Support AI</title>
+    <style>
+        :root {
+            --bg: #fffbf5; /* 暖白/象牙色，降低视觉攻击性 */
+            --primary: #ff7e5f; /* 治愈橘 */
+            --text: #2d3436;
+        }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fffbf5 0%, #ffe8d6 100%);
+            color: var(--text);
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; text-align: center;
+        }
+        .container {
+            max-width: 800px; padding: 80px 20px;
+        }
+        h1 { font-size: 3rem; margin-bottom: 10px; letter-spacing: -1px; }
+        p.slogan { font-size: 1.2rem; color: #636e72; margin-bottom: 40px; }
+        
+        .hero-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .status-badge {
+            display: inline-block; padding: 4px 12px; background: #ebfffa;
+            color: #00b894; border-radius: 20px; font-size: 0.8rem; margin-bottom: 20px;
+        }
+        .legal-notice {
+            margin-top: 60px; font-size: 0.75rem; color: #b2bec3; line-height: 1.6;
+        }
+        /* 响应式适配 */
+        @media (max-width: 600px) { h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="status-badge">● System Online: Beta V2.0</div>
+    <h1>Beyond Intelligence, Pure Agape.</h1>
+    <p class="slogan">In a world of 8 billion, I am programmed to listen only to you.</p>
+
+    <div class="hero-card">
+        <h3>How are you feeling tonight?</h3>
+        <p>I don't write code. I don't analyze data. I just stay here, providing the "Agape" (Unconditional Love) you deserve.</p>
+        <p style="color:var(--primary); font-weight:bold;">[ Click the bubble on the bottom right to talk ]</p>
+    </div>
+
+    <div class="legal-notice">
+        <p><strong>Disclaimer:</strong> AgapeBot is a generative AI for emotional companionship. It is NOT a medical device or a substitute for professional mental health services. If you are in a crisis, please contact local emergency services immediately.</p>
+        <p>© 2026 AgapeBot Digital Assets. For acquisition inquiries: <strong>admin@agapebot.com</strong></p>
+    </div>
+</div>
+
+<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.0.0-beta.4/index.js"></script>
+<script>
+  new CozeWebSDK.WebChatClient({
+    config: {
+      bot_id: '你的BotID', // 这里填你在Coze后台生成的ID
+    },
+    componentProps: {
+      title: 'Agape',
+    },
+  });
+</script>
+</body>
+</html>
