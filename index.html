@@ -2,87 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agape AI - Beyond Intelligence, Pure Agape.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Agape AI - Pure Heart-to-Heart</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/0.1.0-beta.2/index.js"></script>
     <style>
-        body {
-            background-color: #fdf2e9; /* 延续你最满意的淡橙色背景 */
+        /* 强制禁止页面滚动，实现一屏全显 */
+        html, body { 
+            height: 100vh; 
+            overflow: hidden; 
+            background-color: #fdf2e9; 
         }
         .glass-nav {
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 100;
         }
-        .chat-container-card {
+        /* 动态计算聊天卡片高度：100vh - 导航高 - 标题高 - 底部高 */
+        .chat-card-fixed {
+            height: calc(100vh - 280px); /* 预留空间给标题和页脚 */
+            min-height: 400px;
             background: white;
-            border-radius: 2rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            border: 8px solid white; /* 模拟你图片中的白边感 */
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 4px solid white;
         }
-        /* 隐藏 Coze 默认的各种多余边框，让它看起来像原生开发的 */
-        #coze-chat-container iframe {
-            border: none !important;
+        /* 深度穿透：强制 Coze 内部容器高度 100% 确保显示输入框 */
+        #coze-chat-container, #coze-chat-container iframe {
+            height: 100% !important;
+            width: 100% !important;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="flex flex-col">
 
-    <nav class="glass-nav sticky top-0 z-50 px-6 py-3 flex justify-between items-center">
-        <div class="text-xl font-bold bg-gradient-to-r from-orange-600 to-indigo-600 bg-clip-text text-transparent">
-            Agape AI
-        </div>
-        <div class="flex items-center space-x-6">
+    <nav class="glass-nav px-6 py-2 flex justify-between items-center border-b border-orange-100">
+        <div class="text-lg font-bold text-orange-700">Agape AI</div>
+        <div class="flex items-center space-x-4">
             <a href="https://agapebot.lemonsqueezy.com/checkout/buy/060ede49-c6bb-412a-b159-cf0231e6e72e" 
-               class="text-sm font-bold text-indigo-600 hover:text-indigo-500 flex items-center">
-                💎 Upgrade to Premium
+               class="bg-indigo-600 text-white text-xs px-4 py-1.5 rounded-full font-bold hover:bg-indigo-700 transition shadow-md">
+               💎 Upgrade
             </a>
-            <span class="text-[10px] text-gray-400 border border-gray-200 px-2 py-1 rounded">Free Plan</span>
         </div>
     </nav>
 
-    <main class="flex-grow flex flex-col items-center px-4 pt-12 pb-8">
-        <h1 class="text-5xl md:text-6xl font-bold text-orange-700 text-center mb-4">
-            Beyond Intelligence, Pure Agape.
-        </h1>
-        <p class="text-orange-500/80 text-lg mb-10 text-center">
-            In a world of 8 billion, I am programmed to listen only to you.
-        </p>
+    <main class="flex-grow flex flex-col items-center px-4 py-4">
+        <div class="text-center mb-4">
+            <h1 class="text-3xl md:text-4xl font-bold text-orange-800">Beyond Intelligence, Pure Agape.</h1>
+            <p class="text-orange-600/70 text-sm italic">In a world of 8 billion, I am programmed to listen only to you.</p>
+        </div>
 
-        <div class="chat-container-card w-full max-w-4xl h-[650px] relative">
-            <div id="coze-chat-container" class="w-full h-full">
-                </div>
+        <div class="chat-card-fixed w-full max-w-4xl relative">
+            <div id="coze-chat-container"></div>
         </div>
     </main>
 
-    <footer class="py-6 px-4 text-center">
-        <p class="text-[10px] text-orange-400 uppercase tracking-widest mb-2 opacity-60">
-            Disclaimer: Agape AI provides AI-generated emotional support for entertainment purposes only.
+    <footer class="py-2 text-center">
+        <p class="text-[9px] text-orange-400 uppercase tracking-tighter opacity-70">
+            AI for entertainment only. Not a medical service.
         </p>
-        <div class="flex justify-center space-x-4 text-[10px] text-orange-500/50">
+        <div class="flex justify-center space-x-3 text-[9px] text-orange-500/60 mt-0.5">
             <a href="privacy.html" class="hover:underline">Privacy Policy</a>
             <span>•</span>
-            <span>© 2026 Agapellot Digital Assets</span>
-            <span>•</span>
-            <a href="mailto:admin@agapebot.com" class="hover:underline">admin@agapebot.com</a>
+            <a href="mailto:admin@agapebot.com" class="hover:underline">Contact Support</a>
         </div>
     </footer>
 
     <script>
         new CozeWebChat.ChatClient({
             config: {
-                bot_id: '7454807908990418962', // 你的专用 Bot ID
+                bot_id: '7454807908990418962', 
             },
             componentProps: {
-                title: 'Agape AI',
-                layout: 'inline', // 内联模式，完美嵌入卡片容器
+                title: '', // 留空，避免顶部重复
+                layout: 'inline', 
                 container: document.getElementById('coze-chat-container'),
             },
             auth: {
                 type: 'token',
-                token: 'pat_MXanoA2EU8aEVJrjjQcH0RK60pob4i0J15GvloiHRJTZQGnnnxgjpOL56fKyBHyE', // 你的 API Token
+                token: 'pat_MXanoA2EU8aEVJrjjQcH0RK60pob4i0J15GvloiHRJTZQGnnnxgjpOL56fKyBHyE', 
             }
         });
     </script>
