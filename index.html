@@ -6,8 +6,23 @@
     <title>Agape - Beyond Intelligence, Pure Love</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* [保留原代码 2-3] */
         body { margin: 0; background-color: #fff5f0; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 100vh; color: #333; }
-        .hero-text { margin-top: 80px; text-align: center; padding: 0 20px; }
+        
+        /* 💡 新增：顶部导航栏布局，放置升级按钮 */
+        .nav-bar {
+            width: 100%; height: 60px; background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 30px; position: fixed; top: 0; z-index: 1000;
+        }
+        .btn-upgrade {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white; padding: 8px 20px; border-radius: 99px;
+            font-weight: bold; text-decoration: none; font-size: 14px; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* [保留原代码 4-17] */
+        .hero-text { margin-top: 100px; text-align: center; padding: 0 20px; }
         h1 { color: #d35400; font-size: 3.2rem; margin: 0 0 10px 0; font-weight: 600; }
         .tagline { color: #e67e22; font-size: 1.2rem; margin: 0; opacity: 0.8; }
         #agape-chat-main { width: 90%; max-width: 750px; background: white; border-radius: 30px; box-shadow: 0 20px 60px rgba(211, 84, 0, 0.08); display: flex; flex-direction: column; height: 55vh; margin: 40px 0; }
@@ -18,17 +33,28 @@
         .input-area { padding: 20px; border-top: 1px solid #fef0e8; display: flex; gap: 12px; }
         input { flex: 1; border: none; background: #fdf2eb; padding: 16px 25px; border-radius: 30px; outline: none; font-size: 1.1rem; }
         button { background-color: #ff7e5f; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
-        .footer { width: 100%; padding: 40px 20px; text-align: center; font-size: 0.8rem; color: #f39c12; line-height: 1.6; }
+        
+        /* [保留并微调原代码 18] 确保底部链接位置正确 */
+        .footer { width: 100%; padding: 20px 20px 40px 20px; text-align: center; font-size: 0.8rem; color: #f39c12; line-height: 1.6; }
+        .footer-links { margin-top: 10px; display: flex; justify-content: center; gap: 15px; opacity: 0.8; }
+        .footer-links a { color: #f39c12; text-decoration: none; }
     </style>
 </head>
 <body>
+    <div class="nav-bar">
+        <div style="font-weight: bold; color: #d35400;">Agape AI <span style="font-size: 10px; background: #ffe8d6; padding: 2px 5px; border-radius: 4px; margin-left: 5px;">BETA</span></div>
+        <a href="https://agapebot.lemonsqueezy.com/checkout/buy/060ede49-c6bb-412a-b159-cf0231e6e72e" class="btn-upgrade">💎 Upgrade to Premium</a>
+    </div>
+
     <div class="hero-text">
         <h1>Beyond Intelligence, Pure Agape.</h1>
         <p class="tagline">In a world of 8 billion, I am programmed to listen only to you.</p>
     </div>
 
     <div id="agape-chat-main">
-        <div id="chat-history"><div class="msg ai">I've been waiting for you. How are you feeling tonight?</div></div>
+        <div id="chat-history">
+            <div class="msg ai">I've been waiting for you. How are you feeling tonight?</div>
+        </div>
         <div class="input-area">
             <input type="text" id="user-input" placeholder="Tell me anything..." autocomplete="off">
             <button id="send-btn">→</button>
@@ -36,83 +62,86 @@
     </div>
 
     <div class="footer">
-        <p>Disclaimer: AgapeBot is a generative AI for emotional companionship. It is NOT a medical device...<br>© 2026 Agapellot Digital Assets. admin@agapebot.com</p>
+        <p>Disclaimer: AgapeBot is a generative AI for emotional companionship. It is NOT a medical device.</p>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <span>•</span>
+            <span>© 2026 Agapellot Digital Assets</span>
+            <span>•</span>
+            <a href="mailto:admin@agapebot.com">admin@agapebot.com</a>
+        </div>
     </div>
 
-   <script>
-    const PAT = 'pat_MXanoA2EU8aEVJrjjQcH0RK60pob4i0J15GvloiHRJTZQGnnnxgjpOL56fKyBHyE'; 
-    const BOT_ID = '7626718100825735173';
+    <script>
+        const PAT = 'pat_MXanoA2EU8aEVJrjjQcH0RK60pob4i0J15GvloiHRJTZQGnnnxgjpOL56fKyBHyE'; 
+        const BOT_ID = '7626718100825735173';
+        const sendBtn = document.getElementById('send-btn');
+        const userInput = document.getElementById('user-input');
+        const history = document.getElementById('chat-history');
 
-    const sendBtn = document.getElementById('send-btn');
-    const userInput = document.getElementById('user-input');
-    const history = document.getElementById('chat-history');
+        async function handleSend() {
+            const message = userInput.value.trim();
+            if (!message) return;
+            history.innerHTML += `<div class="msg user">${message}</div>`;
+            userInput.value = '';
+            
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'msg ai';
+            aiDiv.innerText = '...';
+            history.appendChild(aiDiv);
+            history.scrollTop = history.scrollHeight;
 
-    async function handleSend() {
-        const message = userInput.value.trim();
-        if (!message) return;
+            try {
+                const response = await fetch('https://api.coze.com/v3/chat', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${PAT}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bot_id: BOT_ID,
+                        user_id: "visitor_" + Math.random().toString(36).slice(2),
+                        additional_messages: [{ role: "user", content: message, content_type: "text" }],
+                        stream: true
+                    })
+                });
 
-        history.innerHTML += `<div class="msg user">${message}</div>`;
-        userInput.value = '';
-        
-        const aiDiv = document.createElement('div');
-        aiDiv.className = 'msg ai';
-        aiDiv.innerText = '...';
-        history.appendChild(aiDiv);
-        history.scrollTop = history.scrollHeight;
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullText = "";
+                let lastEvent = "";
 
-        try {
-            const response = await fetch('https://api.coze.com/v3/chat', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${PAT}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    bot_id: BOT_ID,
-                    user_id: "visitor_" + Math.random().toString(36).slice(2),
-                    additional_messages: [{ role: "user", content: message, content_type: "text" }],
-                    stream: true
-                })
-            });
-
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-            let fullText = "";
-            let lastEvent = ""; // 记录上一个事件类型
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                
-                const chunk = decoder.decode(value);
-                const lines = chunk.split('\n');
-                
-                for (let line of lines) {
-                    line = line.trim();
-                    if (line.startsWith('event:')) {
-                        lastEvent = line.replace('event:', '').trim();
-                        continue;
-                    }
-                    if (line.startsWith('data:')) {
-                        try {
-                            const data = JSON.parse(line.slice(5));
-                            
-                            // 关键优化：只监听 delta（增量）事件来实时更新，忽略 completed（全量）事件防止重复
-                            if (lastEvent === 'conversation.message.delta' && data.content) {
-                                if (fullText === "") aiDiv.innerText = "";
-                                fullText += data.content;
-                                aiDiv.innerText = fullText;
-                                history.scrollTop = history.scrollHeight;
-                            }
-                        } catch (e) { /* 忽略格式不全的块 */ }
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+                    
+                    for (let line of lines) {
+                        line = line.trim();
+                        if (line.startsWith('event:')) {
+                            lastEvent = line.replace('event:', '').trim();
+                            continue;
+                        }
+                        if (line.startsWith('data:')) {
+                            try {
+                                const data = JSON.parse(line.slice(5));
+                                if (lastEvent === 'conversation.message.delta' && data.content) {
+                                    if (fullText === "") aiDiv.innerText = "";
+                                    fullText += data.content;
+                                    aiDiv.innerText = fullText;
+                                    history.scrollTop = history.scrollHeight;
+                                }
+                            } catch (e) { }
+                        }
                     }
                 }
+            } catch (err) {
+                aiDiv.innerText = "Connection lost. Please try again.";
+                console.error(err);
             }
-        } catch (err) {
-            aiDiv.innerText = "Connection lost. Please try again.";
-            console.error(err);
         }
-    }
 
-    sendBtn.onclick = handleSend;
-    userInput.onkeypress = (e) => { if(e.key === 'Enter') handleSend(); };
-</script>
+        sendBtn.onclick = handleSend;
+        userInput.onkeypress = (e) => { if(e.key === 'Enter') handleSend(); };
+    </script>
 </body>
 </html>
