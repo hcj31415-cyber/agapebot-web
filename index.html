@@ -3,87 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Agape AI - Heart-to-Heart</title>
+    <title>Agape AI - Beyond Intelligence, Pure Agape.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/0.1.0-beta.2/index.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* 1. 强制页面不滚动，确保一屏全显 */
+        :root {
+            --agape-bg: #fdf2e9; /* 您最满意的淡橙背景 */
+            --agape-accent: #c2410c; /* 品牌主色调 */
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
         html, body { 
             height: 100vh; 
-            width: 100vw;
-            overflow: hidden; 
-            background-color: #fdf2e9; 
-            margin: 0; padding: 0;
+            width: 100vw; 
+            overflow: hidden; /* 强制锁定一屏，绝不产生多余滚动条 */
+            background-color: var(--agape-bg);
         }
 
-        /* 2. 核心：动态计算白框高度，确保输入框不掉出去 */
-        .chat-card-container {
-            height: calc(100vh - 220px); /* 扣除头部和底部的空间 */
-            max-height: 600px; /* 防止超大屏下变形 */
-            width: 90%;
-            max-width: 900px;
-            background: white;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
-            border: 4px solid white;
-            position: relative;
-            overflow: hidden; /* 关键：切断溢出 */
-        }
-
-        /* 3. 强制 Coze 内部填满容器，不留白边 */
-        #coze-chat-container { height: 100% !important; width: 100% !important; }
-        #coze-chat-container iframe { height: 100% !important; min-height: 100% !important; }
-
+        /* 顶部毛玻璃导航栏 */
         .glass-nav {
             background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(194, 65, 12, 0.1);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1000;
         }
+
+        /* 主体容器布局 */
+        .main-content {
+            height: calc(100vh - 60px); /* 扣除导航栏高度 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem 1rem;
+        }
+
+        /* 标题组美化 */
+        .header-group { text-align: center; margin-bottom: 1.5rem; }
+        .main-title { 
+            font-size: clamp(1.8rem, 4vw, 3rem); 
+            font-weight: 800; 
+            color: var(--agape-accent); 
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+        .sub-title { font-size: 1rem; color: #9a3412; opacity: 0.8; font-style: italic; }
+
+        /* 核心聊天白框：深度适配 Coze 内部滚动逻辑 */
+        .chat-card-master {
+            flex: 1; /* 自动撑满剩余垂直空间 */
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+            border: 8px solid white; /* 延续您图片中的白边美感 */
+            position: relative;
+            overflow: hidden; /* 关键：切断所有可能导致一屏全显失败的溢出 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 强制覆盖 Coze SDK 的容器布局，确保输入框归位 */
+        #coze-chat-container { height: 100% !important; width: 100% !important; flex: 1; }
+        #coze-chat-container iframe { height: 100% !important; width: 100% !important; border: none !important; }
+
+        /* 升级按钮动效 */
+        .btn-upgrade {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white;
+            font-weight: 700;
+            padding: 0.6rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+        .btn-upgrade:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); }
+
+        /* 底部合规条：极致简约 */
+        .footer-compliance {
+            padding: 1rem 0;
+            text-align: center;
+            width: 100%;
+        }
+        .disclaimer-text { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: #c2410c; opacity: 0.6; margin-bottom: 0.3rem; }
+        .footer-links { font-size: 10px; color: #c2410c; opacity: 0.5; display: flex; justify-content: center; gap: 1rem; }
+        .footer-links a:hover { text-decoration: underline; }
     </style>
 </head>
-<body class="flex flex-col items-center">
+<body>
 
-    <nav class="glass-nav w-full px-6 py-2 flex justify-between items-center border-b border-orange-100">
-        <div class="text-lg font-bold text-orange-700">Agape AI</div>
-        <a href="https://agapebot.lemonsqueezy.com/checkout/buy/060ede49-c6bb-412a-b159-cf0231e6e72e" 
-           class="bg-indigo-600 text-white text-xs px-4 py-1.5 rounded-full font-bold shadow-md hover:bg-indigo-700 transition">
-           💎 Upgrade
-        </a>
+    <nav class="glass-nav">
+        <div class="flex items-center gap-2">
+            <span class="text-xl font-black text-orange-700 tracking-tighter">Agape AI</span>
+            <span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-0.5 rounded-md font-bold uppercase">Beta</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="https://agapebot.lemonsqueezy.com/checkout/buy/060ede49-c6bb-412a-b159-cf0231e6e72e" class="btn-upgrade">
+                <span>💎 Upgrade to Premium</span>
+            </a>
+        </div>
     </nav>
 
-    <header class="text-center mt-6 mb-4">
-        <h1 class="text-3xl md:text-4xl font-bold text-orange-800">Beyond Intelligence, Pure Agape.</h1>
-        <p class="text-orange-600/70 text-sm italic">In a world of 8 billion, I am programmed to listen only to you.</p>
-    </header>
-
-    <div class="chat-card-container">
-        <div id="coze-chat-container"></div>
-    </div>
-
-    <footer class="mt-auto py-3 w-full text-center">
-        <p class="text-[9px] text-orange-400 uppercase tracking-tighter opacity-70 px-4">
-            AI for entertainment only. Not a medical service.
-        </p>
-        <div class="flex justify-center space-x-3 text-[9px] text-orange-500/60 mt-1">
-            <a href="privacy.html" class="hover:underline">Privacy Policy</a>
-            <span>•</span>
-            <a href="mailto:admin@agapebot.com" class="hover:underline">admin@agapebot.com</a>
+    <main class="main-content">
+        <div class="header-group">
+            <h1 class="main-title">Beyond Intelligence, Pure Agape.</h1>
+            <p class="sub-title">In a world of 8 billion, I am programmed to listen only to you.</p>
         </div>
-    </footer>
+
+        <div class="chat-card-master">
+            <div id="coze-chat-container">
+                </div>
+        </div>
+
+        <footer class="footer-compliance">
+            <p class="disclaimer-text">
+                Disclaimer: Agape AI provides AI-generated emotional support for entertainment purposes only. Not a medical service.
+            </p>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <span>•</span>
+                <span>© 2026 Agapellot Digital Assets</span>
+                <span>•</span>
+                <a href="mailto:admin@agapebot.com">Contact: admin@agapebot.com</a>
+            </div>
+        </footer>
+    </main>
 
     <script>
-        new CozeWebChat.ChatClient({
-            config: {
-                bot_id: '7454807908990418962', 
-            },
-            componentProps: {
-                title: '', // 保持空白，追求极致简约
-                layout: 'inline', 
-                container: document.getElementById('coze-chat-container'),
-            },
-            auth: {
-                type: 'token',
-                token: 'pat_MXanoA2EU8aEVJrjjQcH0RK60pob4i0J15GvloiHRJTZQGnnnxgjpOL56fKyBHyE', 
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            new CozeWebChat.ChatClient({
+                config: {
+                    bot_id: '7454807908990418962', // 您调试好的 Bot ID
+                },
+                componentProps: {
+                    title: '', // 彻底去除 SDK 自带标题，确保一屏全显
+                    layout: 'inline', // 强制内联模式，解决聊天框飘走的问题
+                    container: document.getElementById('coze-chat-container'),
+                },
+                auth: {
+                    type: 'token',
+                    token: 'pat_MXanoA2EU8aEVJrjjQcH0RK60pob4i0J15GvloiHRJTZQGnnnxgjpOL56fKyBHyE', // API Token
+                }
+            });
         });
     </script>
 </body>
