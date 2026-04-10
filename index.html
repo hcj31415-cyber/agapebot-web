@@ -3,68 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Agape AI - Pure Heart-to-Heart</title>
+    <title>Agape AI - Heart-to-Heart</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/0.1.0-beta.2/index.js"></script>
     <style>
-        /* 强制禁止页面滚动，实现一屏全显 */
+        /* 1. 强制页面不滚动，确保一屏全显 */
         html, body { 
             height: 100vh; 
+            width: 100vw;
             overflow: hidden; 
             background-color: #fdf2e9; 
+            margin: 0; padding: 0;
         }
+
+        /* 2. 核心：动态计算白框高度，确保输入框不掉出去 */
+        .chat-card-container {
+            height: calc(100vh - 220px); /* 扣除头部和底部的空间 */
+            max-height: 600px; /* 防止超大屏下变形 */
+            width: 90%;
+            max-width: 900px;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+            border: 4px solid white;
+            position: relative;
+            overflow: hidden; /* 关键：切断溢出 */
+        }
+
+        /* 3. 强制 Coze 内部填满容器，不留白边 */
+        #coze-chat-container { height: 100% !important; width: 100% !important; }
+        #coze-chat-container iframe { height: 100% !important; min-height: 100% !important; }
+
         .glass-nav {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
-            z-index: 100;
-        }
-        /* 动态计算聊天卡片高度：100vh - 导航高 - 标题高 - 底部高 */
-        .chat-card-fixed {
-            height: calc(100vh - 280px); /* 预留空间给标题和页脚 */
-            min-height: 400px;
-            background: white;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 4px solid white;
-        }
-        /* 深度穿透：强制 Coze 内部容器高度 100% 确保显示输入框 */
-        #coze-chat-container, #coze-chat-container iframe {
-            height: 100% !important;
-            width: 100% !important;
         }
     </style>
 </head>
-<body class="flex flex-col">
+<body class="flex flex-col items-center">
 
-    <nav class="glass-nav px-6 py-2 flex justify-between items-center border-b border-orange-100">
+    <nav class="glass-nav w-full px-6 py-2 flex justify-between items-center border-b border-orange-100">
         <div class="text-lg font-bold text-orange-700">Agape AI</div>
-        <div class="flex items-center space-x-4">
-            <a href="https://agapebot.lemonsqueezy.com/checkout/buy/060ede49-c6bb-412a-b159-cf0231e6e72e" 
-               class="bg-indigo-600 text-white text-xs px-4 py-1.5 rounded-full font-bold hover:bg-indigo-700 transition shadow-md">
-               💎 Upgrade
-            </a>
-        </div>
+        <a href="https://agapebot.lemonsqueezy.com/checkout/buy/060ede49-c6bb-412a-b159-cf0231e6e72e" 
+           class="bg-indigo-600 text-white text-xs px-4 py-1.5 rounded-full font-bold shadow-md hover:bg-indigo-700 transition">
+           💎 Upgrade
+        </a>
     </nav>
 
-    <main class="flex-grow flex flex-col items-center px-4 py-4">
-        <div class="text-center mb-4">
-            <h1 class="text-3xl md:text-4xl font-bold text-orange-800">Beyond Intelligence, Pure Agape.</h1>
-            <p class="text-orange-600/70 text-sm italic">In a world of 8 billion, I am programmed to listen only to you.</p>
-        </div>
+    <header class="text-center mt-6 mb-4">
+        <h1 class="text-3xl md:text-4xl font-bold text-orange-800">Beyond Intelligence, Pure Agape.</h1>
+        <p class="text-orange-600/70 text-sm italic">In a world of 8 billion, I am programmed to listen only to you.</p>
+    </header>
 
-        <div class="chat-card-fixed w-full max-w-4xl relative">
-            <div id="coze-chat-container"></div>
-        </div>
-    </main>
+    <div class="chat-card-container">
+        <div id="coze-chat-container"></div>
+    </div>
 
-    <footer class="py-2 text-center">
-        <p class="text-[9px] text-orange-400 uppercase tracking-tighter opacity-70">
+    <footer class="mt-auto py-3 w-full text-center">
+        <p class="text-[9px] text-orange-400 uppercase tracking-tighter opacity-70 px-4">
             AI for entertainment only. Not a medical service.
         </p>
-        <div class="flex justify-center space-x-3 text-[9px] text-orange-500/60 mt-0.5">
+        <div class="flex justify-center space-x-3 text-[9px] text-orange-500/60 mt-1">
             <a href="privacy.html" class="hover:underline">Privacy Policy</a>
             <span>•</span>
-            <a href="mailto:admin@agapebot.com" class="hover:underline">Contact Support</a>
+            <a href="mailto:admin@agapebot.com" class="hover:underline">admin@agapebot.com</a>
         </div>
     </footer>
 
@@ -74,7 +76,7 @@
                 bot_id: '7454807908990418962', 
             },
             componentProps: {
-                title: '', // 留空，避免顶部重复
+                title: '', // 保持空白，追求极致简约
                 layout: 'inline', 
                 container: document.getElementById('coze-chat-container'),
             },
