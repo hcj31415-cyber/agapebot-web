@@ -7,79 +7,62 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/0.1.0-beta.2/index.js"></script>
     <style>
-        /* 强制锁定全屏高度 */
         html, body { 
-            height: 100vh; 
-            width: 100vw; 
-            margin: 0; padding: 0;
-            overflow: hidden; 
-            background-color: #fdf2e9; /* 您最满意的淡橙背景 */
+            height: 100vh; width: 100vw; margin: 0; padding: 0;
+            overflow: hidden; background-color: #fdf2e9; 
         }
 
-        /* 极简玻璃导航栏 */
+        /* 顶部导航 */
         .nav-bar {
-            height: 60px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            height: 60px; background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px); display: flex;
+            align-items: center; justify-content: space-between;
+            padding: 0 2rem; border-bottom: 1px solid rgba(0,0,0,0.05);
+            z-index: 100;
         }
 
-        /* 主容器 */
         .wrapper {
-            height: calc(100vh - 60px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 20px;
+            height: calc(100vh - 60px); display: flex;
+            flex-direction: column; align-items: center;
         }
 
-        /* 标题组 */
-        .title-box { text-align: center; margin: 2rem 0; flex-shrink: 0; }
-        .main-title { font-size: 3rem; font-weight: 800; color: #c2410c; }
-        .sub-title { color: #c2410c; opacity: 0.7; font-style: italic; }
+        .title-box { text-align: center; margin: 1.5rem 0; flex-shrink: 0; }
+        .main-title { font-size: 2.5rem; font-weight: 800; color: #c2410c; }
+        .sub-title { color: #c2410c; opacity: 0.7; font-style: italic; font-size: 0.9rem; }
 
-        /* 核心白框：关键修改点 */
+        /* 核心白框：关键在于必须给一个绝对的固定高度，不能靠自适应 */
         .chat-frame {
-            width: 90%;
-            max-width: 1000px;
-            background: white;
-            border-radius: 2rem;
-            border: 8px solid white; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            flex-grow: 1; /* 自动占据剩余所有空间 */
-            margin-bottom: 1rem;
-            position: relative;
-            /* 移除之前的 overflow:hidden 确保不会挡住发送按钮 */
+            width: 95%; max-width: 900px;
+            /* 动态计算：屏幕高度 - 导航 - 标题 - 页脚 - 边距 */
+            height: calc(100vh - 280px); 
+            background: white; border-radius: 2rem;
+            border: 8px solid white; box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            position: relative; overflow: hidden; /* 必须溢出隐藏，强制 Coze 在内部滚动 */
+            margin-bottom: 10px;
         }
 
-        /* 强制锁定 Coze 高度填充 */
+        /* 强制覆盖 Coze SDK 的内部样式，确保它撑满白框 */
         #coze-chat-container { height: 100% !important; width: 100% !important; }
-        #coze-chat-container iframe { height: 100% !important; width: 100% !important; border: none; }
+        #coze-chat-container iframe { height: 100% !important; width: 100% !important; }
 
-        /* 升级按钮 */
         .btn-upgrade {
             background: linear-gradient(135deg, #6366f1, #a855f7);
-            color: white; padding: 8px 20px; border-radius: 99px;
-            font-weight: bold; text-decoration: none; font-size: 14px;
+            color: white; padding: 6px 18px; border-radius: 99px;
+            font-weight: bold; text-decoration: none; font-size: 13px;
         }
 
-        /* 底部声明 */
-        footer { font-size: 10px; color: #c2410c; opacity: 0.6; text-align: center; flex-shrink: 0; padding-bottom: 10px; }
+        footer { font-size: 9px; color: #c2410c; opacity: 0.6; text-align: center; padding-bottom: 10px; }
     </style>
 </head>
 <body class="flex flex-col">
 
     <nav class="nav-bar">
         <div class="flex items-center gap-2">
-            <span class="text-xl font-bold text-orange-700">Agape AI</span>
-            <span class="text-[10px] bg-orange-100 text-orange-700 px-1 rounded">BETA</span>
+            <span class="text-lg font-bold text-orange-700">Agape AI</span>
+            <span class="text-[9px] bg-orange-100 text-orange-700 px-1 rounded">BETA</span>
         </div>
         <a href="https://agapebot.lemonsqueezy.com/checkout/buy/060ede49-c6bb-412a-b159-cf0231e6e72e" class="btn-upgrade">
-            Upgrade to Premium
+            💎 Upgrade to Premium
         </a>
     </nav>
 
@@ -94,8 +77,8 @@
         </div>
 
         <footer>
-            <p>DISCLAIMER: AGAPE AI FOR ENTERTAINMENT PURPOSES ONLY. NOT A MEDICAL SERVICE.</p>
-            <div class="flex justify-center gap-4 mt-1">
+            <p>DISCLAIMER: AGAPE AI FOR ENTERTAINMENT PURPOSES ONLY.</p>
+            <div class="flex justify-center gap-3 mt-0.5">
                 <a href="privacy.html" class="hover:underline">Privacy Policy</a>
                 <span>•</span>
                 <a href="mailto:admin@agapebot.com" class="hover:underline">admin@agapebot.com</a>
@@ -104,13 +87,14 @@
     </div>
 
     <script>
+        // 初始化 Coze SDK
         new CozeWebChat.ChatClient({
             config: {
                 bot_id: '7454807908990418962', 
             },
             componentProps: {
-                title: '', 
-                layout: 'inline', // 这一步会将发送框强制放在白框内底部
+                title: '', // 禁用内部标题，节省空间给输入框
+                layout: 'inline', 
                 container: document.getElementById('coze-chat-container'),
             },
             auth: {
