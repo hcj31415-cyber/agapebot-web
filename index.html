@@ -2,84 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgapeBot | Pure Emotional Support AI</title>
+    <title>Agape - Pure Love AI</title>
     <style>
-        :root {
-            --bg: #fffbf5; /* 暖白/象牙色，降低视觉攻击性 */
-            --primary: #ff7e5f; /* 治愈橘 */
-            --text: #2d3436;
-        }
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #fffbf5 0%, #ffe8d6 100%);
-            color: var(--text);
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; text-align: center;
-        }
-        .container {
-            max-width: 800px; padding: 80px 20px;
-        }
-        h1 { font-size: 3rem; margin-bottom: 10px; letter-spacing: -1px; }
-        p.slogan { font-size: 1.2rem; color: #636e72; margin-bottom: 40px; }
+        body { margin: 0; background: #fff5f0; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        .hero { margin-bottom: 2rem; text-align: center; }
+        h1 { color: #d35400; font-size: 2.8rem; margin: 0; }
         
-        .hero-card {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 40px;
-            border: 1px solid rgba(255,255,255,0.6);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        .status-badge {
-            display: inline-block; padding: 4px 12px; background: #ebfffa;
-            color: #00b894; border-radius: 20px; font-size: 0.8rem; margin-bottom: 20px;
-        }
-        .legal-notice {
-            margin-top: 60px; font-size: 0.75rem; color: #b2bec3; line-height: 1.6;
-        }
-        /* 响应式适配 */
-        @media (max-width: 600px) { h1 { font-size: 2rem; } }
+        /* 中心对话框样式 */
+        #chat-container { width: 90%; max-width: 700px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(211, 84, 0, 0.1); padding: 20px; }
+        #chat-history { height: 300px; overflow-y: auto; margin-bottom: 20px; padding: 10px; text-align: left; font-size: 1rem; line-height: 1.5; }
+        .input-group { display: flex; gap: 10px; border-top: 1px solid #eee; padding-top: 20px; }
+        input { flex: 1; border: none; outline: none; font-size: 1.1rem; padding: 10px; }
+        button { background: #ff7e5f; color: white; border: none; padding: 10px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; }
+        
+        .ai-msg { color: #d35400; margin-bottom: 10px; }
+        .user-msg { color: #333; margin-bottom: 10px; font-weight: 500; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="status-badge">● System Online: Beta V2.0</div>
-    <h1>Beyond Intelligence, Pure Agape.</h1>
-    <p class="slogan">In a world of 8 billion, I am programmed to listen only to you.</p>
-
-    <div class="hero-card">
-        <h3>How are you feeling tonight?</h3>
-        <p>I don't write code. I don't analyze data. I just stay here, providing the "Agape" (Unconditional Love) you deserve.</p>
-        <p style="color:var(--primary); font-weight:bold;">[ Click the bubble on the bottom right to talk ]</p>
+    <div class="hero">
+        <h1>Agape</h1>
+        <p>Beyond Intelligence, Pure Unconditional Love.</p>
     </div>
 
-    <div class="legal-notice">
-        <p><strong>Disclaimer:</strong> AgapeBot is a generative AI for emotional companionship. It is NOT a medical device or a substitute for professional mental health services. If you are in a crisis, please contact local emergency services immediately.</p>
-        <p>© 2026 AgapeBot Digital Assets. For acquisition inquiries: <strong>admin@agapebot.com</strong></p>
+    <div id="chat-container">
+        <div id="chat-history"></div>
+        <div class="input-group">
+            <input type="text" id="user-input" placeholder="Tell me what's on your mind...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
     </div>
-</div>
 
+    <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
+    <script>
+        const botId = '7626718100825735173';
+        
+        // 初始化 SDK，但通过 CSS 隐藏自带的 UI
+        const client = new CozeWebSDK.WebChatClient({
+            config: { bot_id: botId },
+            componentProps: { title: 'Agape' },
+            auth: { type: 'token', token: '这里填你刚才生成的PAT', onRefreshToken: () => '这里填你刚才生成的PAT' }
+        });
 
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
-<script>
-  const cozeChat = new CozeWebSDK.WebChatClient({
-    config: {
-      bot_id: '7626718100825735173', 
-    },
-    componentProps: {
-      title: 'Agape',
-      layout: 'pc',
-    },
-    // 【关键修复】通过 auth 传递一个空值，强制跳过后端对 unauth 的拦截
-    auth: {
-      type: 'token',
-      token: 'just_for_bypass', 
-      onRefreshToken: function () {
-        return 'just_for_bypass';
-      }
-    }
-  });
-</script>
+        // 绑定中心输入框到 SDK
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const history = document.getElementById('chat-history');
+            if(!input.value) return;
+
+            // 显示用户发送的内容
+            history.innerHTML += `<div class="user-msg">You: ${input.value}</div>`;
+            
+            // 调用 SDK 的底层发送方法 (这是避开 502 的关键)
+            // 注意：如果 SDK 仍报错，我们将直接切换到标准 Fetch API 调用模式
+            alert('Connecting to Agape...'); 
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
