@@ -6,70 +6,66 @@
     <title>Agape - Beyond Intelligence, Pure Love</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* 基础样式：延续 Agape 的暖橙色调 */
-        body { margin: 0; background-color: #fff5f0; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100vh; color: #333; overflow: hidden; }
+        /* 基础环境 */
+        body { margin: 0; background-color: #fff5f0; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 100vh; color: #333; }
         
-        /* 头部：System Status (参考原始布局) */
-        .header { width: 100%; padding: 20px 0; text-align: center; font-size: 0.9rem; color: #f39c12; position: absolute; top: 0; }
-        .header span { background: white; padding: 5px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(211, 84, 0, 0.05); }
-
-        /* 中部核心区：Agape 搜索框布局 */
-        .hero { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; width: 100%; max-width: 800px; padding: 0 20px; text-align: center; }
+        /* 顶部文字区 - 保留 */
+        .hero-text { margin-top: 80px; text-align: center; padding: 0 20px; }
         h1 { color: #d35400; font-size: 3.2rem; margin: 0 0 10px 0; font-weight: 600; }
-        p.subtitle { color: #e67e22; font-size: 1.3rem; margin: 0 0 40px 0; max-width: 600px; }
+        .tagline { color: #e67e22; font-size: 1.2rem; margin: 0; opacity: 0.8; }
 
-        /* 中心对话框：融合 Google 搜索框概念 */
-        #agape-search-box { width: 100%; background: white; border-radius: 30px; box-shadow: 0 15px 50px rgba(211, 84, 0, 0.1); display: flex; flex-direction: column; height: 55vh; max-height: 600px; transition: 0.3s; }
-        #agape-search-box.active { box-shadow: 0 15px 50px rgba(211, 84, 0, 0.2); }
-
-        /* 对话历史：高级的气泡效果 */
-        #chat-history { flex: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        .msg { max-width: 85%; padding: 14px 20px; border-radius: 22px; font-size: 1.05rem; line-height: 1.6; text-align: left; }
-        .ai { background-color: #fff5f0; color: #d35400; align-self: flex-start; border-bottom-left-radius: 3px; }
-        .user { background-color: #ff7e5f; color: white; align-self: flex-end; border-bottom-right-radius: 3px; font-weight: 500; }
-
-        /* 输入区域：极简，无干扰 */
-        .input-area { padding: 20px; border-top: 1px solid #fef0e8; display: flex; gap: 15px; align-items: center; }
-        input { flex: 1; border: none; background: #fdf2eb; padding: 18px 25px; border-radius: 30px; outline: none; font-size: 1.1rem; }
-        input::placeholder { color: #feb47b; }
+        /* 中心对话框 - 替换原有的中心框 */
+        #agape-chat-main { 
+            width: 90%; max-width: 750px; background: white; border-radius: 30px; 
+            box-shadow: 0 20px 60px rgba(211, 84, 0, 0.08); display: flex; flex-direction: column; 
+            height: 55vh; margin: 40px 0; position: relative; z-index: 10;
+        }
         
-        button { background-color: #ff7e5f; color: white; border: none; width: 55px; height: 55px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; transition: 0.3s; box-shadow: 0 4px 10px rgba(255,126,95,0.3); }
+        #chat-history { flex: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
+        .msg { max-width: 85%; padding: 14px 20px; border-radius: 22px; font-size: 1.05rem; line-height: 1.5; }
+        .ai { background-color: #fff5f0; color: #d35400; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .user { background-color: #ff7e5f; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+        /* 输入区 */
+        .input-area { padding: 20px; border-top: 1px solid #fef0e8; display: flex; gap: 12px; }
+        input { flex: 1; border: none; background: #fdf2eb; padding: 16px 25px; border-radius: 30px; outline: none; font-size: 1.1rem; transition: 0.3s; }
+        input:focus { background: #f9e8de; }
+        button { background-color: #ff7e5f; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,126,95,0.2); }
         button:hover { background-color: #d35400; transform: scale(1.05); }
 
-        /* 底部：版权与免责 (参考原始布局) */
-        .footer { width: 100%; padding: 30px 0; text-align: center; font-size: 0.85rem; color: #f39c12; background: white; border-top: 1px solid #fef0e8; position: absolute; bottom: 0; }
-        .footer-line2 { margin-top: 10px; color: #feb47b; }
+        /* 底部合规区 - 保留 */
+        .footer { width: 100%; padding: 40px 20px; text-align: center; font-size: 0.8rem; color: #f39c12; line-height: 1.6; }
+        .footer a { color: #f39c12; text-decoration: none; border-bottom: 1px solid #feb47b; }
 
-        /* 隐藏原厂 Coze SDK 的所有痕迹 */
-        #coze-web-sdk-container, .coze-web-sdk-launcher { display: none !important; }
+        /* 彻底移除 Coze 气泡干扰 */
+        #coze-web-sdk-container { display: none !important; }
     </style>
 </head>
 <body>
-    <div class="header"><span>● System Online: Agape V3.0 (API Mode)</span></div>
 
-    <div class="hero">
-        <h1>Agape</h1>
-        <p class="subtitle">I don't write code. I don't analyze data. I just stay here, providing the "Agape" (Unconditional Love) you deserve.</p>
-        
-        <div id="agape-search-box">
-            <div id="chat-history">
-                <div class="msg ai">Hello, I am Agape. I am here to listen with love. Tell me what's on your mind?</div>
-            </div>
-            <div class="input-area">
-                <input type="text" id="user-input" placeholder="Type your message..." onkeypress="if(event.keyCode==13) sendMessage()">
-                <button onclick="sendMessage()">→</button>
-            </div>
+    <div class="hero-text">
+        <h1>Beyond Intelligence, Pure Agape.</h1>
+        <p class="tagline">In a world of 8 billion, I am programmed to listen only to you.</p>
+    </div>
+
+    <div id="agape-chat-main">
+        <div id="chat-history">
+            <div class="msg ai">I've been waiting for you. How are you feeling tonight?</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" onkeypress="if(event.keyCode==13) sendMessage()">
+            <button onclick="sendMessage()">→</button>
         </div>
     </div>
 
     <div class="footer">
-        <div>Disclaimer: AgapeBot is a generative AI for emotional companionship. It is NOT a medical device. If you are in crisis, please contact local emergency services immediately.</div>
-        <div class="footer-line2">© 2026 Agapellot Digital Assets. Contact: admin@agapebot.com</div>
+        <p>Disclaimer: AgapeBot is a generative AI for emotional companionship. It is NOT a medical device or a substitute for professional mental health services.<br>If you are in a crisis, please contact local emergency services immediately.</p>
+        <p>© 2026 Agapellot Digital Assets. For acquisition inquiries: <a href="mailto:admin@agapebot.com">admin@agapebot.com</a></p>
     </div>
 
     <script>
-        // 【CTO 核心配置】：填入你刚才保存的那个 pat_XXXXX
-        const PAT = 'pat_tpbdyBem1I4AdU0gNZmuVVk29l0tsz2rUkjC6cllTrKLX4ppcQnLNxoo5MtwWYhj';
+        // 配置 PAT 和 Bot ID
+        const PAT = 'pat_tpbdyBem1I4AdU0gNZmuVVk29l0tsz2rUkjC6cllTrKLX4ppcQnLNxoo5MtwWYhj'; 
         const BOT_ID = '7626718100825735173';
 
         async function sendMessage() {
@@ -78,47 +74,58 @@
             const message = input.value.trim();
             if (!message) return;
 
-            // 1. 用户消息立即上墙
+            // 用户发送
             history.innerHTML += `<div class="msg user">${message}</div>`;
             input.value = '';
             history.scrollTop = history.scrollHeight;
 
-            // 2. 模拟 AI 正在思考 (提升交互感)
+            // 思考状态
             const thinkingId = 'thinking_' + Date.now();
-            history.innerHTML += `<div class="msg ai" id="${thinkingId}">Agape is typing...</div>`;
+            history.innerHTML += `<div class="msg ai" id="${thinkingId}">Agape is listening...</div>`;
             history.scrollTop = history.scrollHeight;
 
-            // 3. 调用 API 直接请求 (跳过白名单校验)
             try {
+                // 第一步：创建 Chat
                 const response = await fetch('https://api.coze.com/v3/chat', {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${PAT}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         bot_id: BOT_ID,
-                        user_id: "user_" + Math.random().toString(36).substring(7),
+                        user_id: "agape_visitor_1",
                         additional_messages: [{ role: "user", content: message, content_type: "text" }],
                         stream: false
                     })
                 });
+                const chatData = await response.json();
+                const chatId = chatData.data.id;
 
-                // 这里简单演示获取回复（正式版需要轮询处理，为了审核我们先展示联通）
-                const data = await response.json();
-                document.getElementById(thinkingId).innerText = "Received! (We will soon enable full real-time reply here). Let's continue talking!";
+                // 第二步：智能轮询获取状态
+                let status = 'in_progress';
+                while (status === 'in_progress') {
+                    await new Promise(r => setTimeout(r, 1000));
+                    const check = await fetch(`https://api.coze.com/v3/chat/retrieve?chat_id=${chatId}`, {
+                        headers: { 'Authorization': `Bearer ${PAT}` }
+                    });
+                    const checkData = await check.json();
+                    status = checkData.data.status;
 
-            } catch (error) {
-                document.getElementById(thinkingId).innerText = "Error: Make sure your PAT Token is valid and has Chat permissions.";
-                document.getElementById(thinkingId).style.color = 'red';
+                    if (status === 'completed') {
+                        // 第三步：提取回复
+                        const list = await fetch(`https://api.coze.com/v3/chat/message/list?chat_id=${chatId}`, {
+                            headers: { 'Authorization': `Bearer ${PAT}` }
+                        });
+                        const listData = await list.json();
+                        const answer = listData.data.find(m => m.role === 'assistant' && m.type === 'answer');
+                        document.getElementById(thinkingId).innerText = answer.content;
+                    } else if (status === 'failed') {
+                        document.getElementById(thinkingId).innerText = "I'm sorry, I lost my train of thought. Can we try again?";
+                    }
+                }
+            } catch (e) {
+                document.getElementById(thinkingId).innerText = "My connection is a bit weak. Please check back in a moment.";
             }
             history.scrollTop = history.scrollHeight;
         }
-
-        // 输入框聚焦美化
-        document.getElementById('user-input').addEventListener('focus', () => {
-            document.getElementById('agape-search-box').classList.add('active');
-        });
-        document.getElementById('user-input').addEventListener('blur', () => {
-            document.getElementById('agape-search-box').classList.remove('active');
-        });
     </script>
 </body>
 </html>
